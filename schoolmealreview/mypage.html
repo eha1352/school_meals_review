@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>내 정보</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>🍚 급식 리뷰</h1>
+
+</header>
+
+
+<main class="container">
+
+    <h2>내 정보</h2>
+
+    <div id="userInfo">
+        불러오는 중...
+    </div>
+
+
+    <hr>
+
+
+    <h2>별명 변경</h2>
+
+    <form id="nicknameForm">
+
+        <input 
+    type="text" 
+    id="newNickname" 
+    placeholder="새 별명" 
+    minlength="2"
+    maxlength="12"
+    required 
+>
+
+<small>별명은 2~12글자 내로 입력해주세요.</small>
+
+<button type="submit"> 
+    별명 변경 
+</button>
+    </form>
+
+
+    <p id="message"></p>
+
+
+    <a href="index.html">
+        홈으로 돌아가기
+    </a>
+
+</main>
+
+
+<script type="module"
+        src="js/mypage.js">
+</script>
+
+</body>
+</html>

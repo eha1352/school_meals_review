@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>관리자 페이지 - 학교 급식 리뷰</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>🍚 학교 급식 리뷰</h1>
+
+    <nav>
+
+        <a href="index.html">
+            홈
+        </a>
+
+        <a href="meal.html">
+            급식 리뷰
+        </a>
+
+        <a href="mypage.html">
+            내 정보
+        </a>
+
+        <a href="admin.html">
+            관리자
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <!-- 관리자 권한 -->
+
+    <section id="adminContent">
+
+        <h2>관리자 권한 확인 중...</h2>
+
+    </section>
+
+
+    <hr>
+
+
+    <!-- 급식 등록 -->
+
+    <section class="admin-section">
+
+        <h2>📅 급식 등록 / 수정</h2>
+
+        <p>
+            오늘부터 앞으로 30일의 급식을 등록할 수 있습니다.
+        </p>
+
+
+        <!-- 날짜 선택 -->
+
+        <div class="meal-input">
+
+            <label for="mealDate">
+
+                <strong>
+                    급식 날짜
+                </strong>
+
+            </label>
+
+            <br>
+
+            <input
+                type="date"
+                id="mealDate"
+            >
+
+            <p id="dateGuide"></p>
+
+        </div>
+
+
+        <form id="mealForm">
+
+
+            <!-- 중식 -->
+
+            <div class="meal-input">
+
+                <h3>🍚 중식</h3>
+
+                <p>
+                    메뉴를 한 줄에 하나씩 입력하세요.
+                </p>
+
+                <textarea
+                    id="lunchMenu"
+                    rows="8"
+                    placeholder="쌀밥&#10;김치찌개&#10;돈까스&#10;깍두기"
+                ></textarea>
+
+            </div>
+
+
+            <!-- 석식 -->
+
+            <div class="meal-input">
+
+                <h3>🌙 석식</h3>
+
+                <p>
+                    메뉴를 한 줄에 하나씩 입력하세요.
+                </p>
+
+                <textarea
+                    id="dinnerMenu"
+                    rows="8"
+                    placeholder="볶음밥&#10;짜장소스&#10;단무지&#10;배추김치"
+                ></textarea>
+
+            </div>
+
+
+            <button type="submit">
+
+                급식 저장
+
+            </button>
+
+        </form>
+
+
+        <p id="mealMessage"></p>
+
+    </section>
+
+
+    <hr>
+
+
+    <!-- 회원 목록 -->
+
+    <section class="admin-section">
+
+        <h2>👥 회원 목록</h2>
+
+        <div id="userList">
+
+            회원 정보를 불러오는 중...
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script
+    type="module"
+    src="js/admin.js">
+</script>
+
+</body>
+
+</html>

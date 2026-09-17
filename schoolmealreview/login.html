@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>로그인 - 급식 리뷰</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>🍚 급식 리뷰</h1>
+</header>
+
+<main class="container">
+
+    <h2>로그인</h2>
+
+    <form id="loginForm">
+
+        <label>학번</label>
+
+        <input
+            type="text"
+            id="studentNumber"
+            placeholder="예: 10101"
+            maxlength="5"
+            required
+        >
+
+        <label>비밀번호</label>
+
+        <input
+            type="password"
+            id="password"
+            required
+        >
+
+        <button type="submit">
+            로그인
+        </button>
+
+    </form>
+
+    <p id="message"></p>
+
+    <p>
+        계정이 없나요?
+        <a href="signup.html">회원가입</a>
+    </p>
+
+</main>
+
+<script type="module" src="js/login.js"></script>
+
+</body>
+</html>

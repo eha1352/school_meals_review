@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>급식 리뷰</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>🍚 급식 리뷰</h1>
+
+    <nav>
+
+        <a href="index.html">
+            홈
+        </a>
+
+        <a href="meal.html">
+            급식 리뷰
+        </a>
+
+        <a href="mypage.html">
+            내 정보
+        </a>
+
+        <a href="login.html"
+           id="loginLink">
+            로그인
+        </a>
+
+        <a href="admin.html"
+           id="adminLink"
+           style="display:none;">
+            관리자
+        </a>
+
+        <button
+            id="logoutButton"
+            style="display:none;">
+            로그아웃
+        </button>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <h2>🍚 급식</h2>
+
+    <p id="mealDate">
+        날짜를 불러오는 중...
+    </p>
+
+
+    <!-- ========================== -->
+    <!-- 중식 -->
+    <!-- ========================== -->
+
+    <section class="meal-section">
+
+        <h2>🍚 중식</h2>
+
+        <ul id="lunchMenu">
+
+            <li>
+                불러오는 중...
+            </li>
+
+        </ul>
+
+
+        <hr>
+
+
+        <h3>
+            💬 중식 리뷰
+        </h3>
+
+
+        <div id="lunchReviewArea">
+
+            <form id="lunchReviewForm">
+
+                <textarea
+                    id="lunchReviewContent"
+                    rows="4"
+                    placeholder="오늘 중식은 어땠나요?"
+                    required>
+                </textarea>
+
+
+                <button type="submit">
+                    중식 리뷰 작성
+                </button>
+
+            </form>
+
+
+            <p id="lunchReviewMessage"></p>
+
+        </div>
+
+
+        <div id="lunchReviewList">
+
+            <p>
+                리뷰를 불러오는 중...
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <hr>
+
+
+    <!-- ========================== -->
+    <!-- 석식 -->
+    <!-- ========================== -->
+
+    <section class="meal-section">
+
+        <h2>🌙 석식</h2>
+
+        <ul id="dinnerMenu">
+
+            <li>
+                불러오는 중...
+            </li>
+
+        </ul>
+
+
+        <hr>
+
+
+        <h3>
+            💬 석식 리뷰
+        </h3>
+
+
+        <div id="dinnerReviewArea">
+
+            <form id="dinnerReviewForm">
+
+                <textarea
+                    id="dinnerReviewContent"
+                    rows="4"
+                    placeholder="오늘 석식은 어땠나요?"
+                    required>
+                </textarea>
+
+
+                <button type="submit">
+                    석식 리뷰 작성
+                </button>
+
+            </form>
+
+
+            <p id="dinnerReviewMessage"></p>
+
+        </div>
+
+
+        <div id="dinnerReviewList">
+
+            <p>
+                리뷰를 불러오는 중...
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <br>
+
+
+    <a href="index.html">
+        ← 급식 목록으로
+    </a>
+
+</main>
+
+
+<!-- 급식 -->
+
+<script
+    type="module"
+    src="js/meal.js">
+</script>
+
+
+<!-- 리뷰 -->
+
+<script
+    type="module"
+    src="js/review.js">
+</script>
+
+
+<!-- 로그인 상태 -->
+
+<script type="module">
+
+import { auth, db } from "./js/firebase.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+const loginLink =
+    document.getElementById("loginLink");
+
+const logoutButton =
+    document.getElementById("logoutButton");
+
+const adminLink =
+    document.getElementById("adminLink");
+
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        if (!user) {
+
+            loginLink.style.display =
+                "inline";
+
+            logoutButton.style.display =
+                "none";
+
+            adminLink.style.display =
+                "none";
+
+            return;
+        }
+
+
+        loginLink.style.display =
+            "none";
+
+        logoutButton.style.display =
+            "inline";
+
+
+        try {
+
+            const snapshot =
+                await getDoc(
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    )
+                );
+
+
+            if (
+                snapshot.exists() &&
+                snapshot.data().role === "admin"
+            ) {
+
+                adminLink.style.display =
+                    "inline";
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+    }
+);
+
+
+logoutButton.addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            await signOut(auth);
+
+            location.reload();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "로그아웃에 실패했습니다."
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

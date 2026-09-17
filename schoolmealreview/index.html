@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>급식 리뷰</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+
+    <h1>🍚 오늘 뭐 먹지?</h1>
+
+    <nav>
+
+        <a href="index.html">홈</a>
+
+        <a href="meal.html">급식 리뷰</a>
+
+        <a href="mypage.html">내 정보</a>
+
+        <a href="login.html" id="loginLink">
+            로그인
+        </a>
+
+        <a href="admin.html"
+           id="adminLink"
+           style="display:none;">
+            관리자
+        </a>
+
+        <button id="logoutButton"
+                style="display:none;">
+            로그아웃
+        </button>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <!-- 오늘 급식 -->
+
+    <section>
+
+        <h2>오늘의 급식</h2>
+
+        <p id="today"></p>
+
+        <div id="todayMeal">
+
+            <p>급식 정보를 불러오는 중...</p>
+
+        </div>
+
+    </section>
+
+
+    <hr>
+
+
+    <!-- 앞으로의 급식 -->
+
+    <section>
+
+        <h2>📅 앞으로의 급식</h2>
+
+        <p>
+            앞으로 약 1개월의 급식을 확인할 수 있습니다.
+        </p>
+
+        <div id="mealSchedule">
+
+            <p>급식 일정을 불러오는 중...</p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script type="module"
+        src="js/index.js">
+</script>
+
+</body>
+</html>
