@@ -2,31 +2,19 @@
 <html lang="ko">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>급식 리뷰</title>
-
-    <link rel="stylesheet"
-          href="css/style.css">
-
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 
 <body>
 
 <header>
-
     <h1>🍚 급식 리뷰</h1>
 
     <nav>
-
-        <a href="index.html">
-            홈
-        </a>
+        <a href="index.html">홈</a>
 
         <a href="meal.html">
             급식 리뷰
@@ -36,8 +24,7 @@
             내 정보
         </a>
 
-        <a href="login.html"
-           id="loginLink">
+        <a href="login.html" id="loginLink">
             로그인
         </a>
 
@@ -52,9 +39,7 @@
             style="display:none;">
             로그아웃
         </button>
-
     </nav>
-
 </header>
 
 
@@ -67,6 +52,29 @@
     </p>
 
 
+    <!-- 날짜 이동 -->
+
+    <div class="date-navigation">
+
+        <button
+            type="button"
+            id="prevDayButton">
+            ← 이전 날짜
+        </button>
+
+        <input
+            type="date"
+            id="datePicker">
+
+        <button
+            type="button"
+            id="nextDayButton">
+            다음 날짜 →
+        </button>
+
+    </div>
+
+
     <!-- ========================== -->
     <!-- 중식 -->
     <!-- ========================== -->
@@ -76,11 +84,9 @@
         <h2>🍚 중식</h2>
 
         <ul id="lunchMenu">
-
             <li>
                 불러오는 중...
             </li>
-
         </ul>
 
 
@@ -95,6 +101,65 @@
         <div id="lunchReviewArea">
 
             <form id="lunchReviewForm">
+
+                <!-- ⭐ 중식 별점 -->
+
+                <div class="rating-input">
+
+                    <span>급식 별점</span>
+
+                    <div class="star-buttons">
+
+                        <button
+                            type="button"
+                            class="star-btn"
+                            data-type="lunch"
+                            data-rating="1">
+                            ☆
+                        </button>
+
+                        <button
+                            type="button"
+                            class="star-btn"
+                            data-type="lunch"
+                            data-rating="2">
+                            ☆
+                        </button>
+
+                        <button
+                            type="button"
+                            class="star-btn"
+                            data-type="lunch"
+                            data-rating="3">
+                            ☆
+                        </button>
+
+                        <button
+                            type="button"
+                            class="star-btn"
+                            data-type="lunch"
+                            data-rating="4">
+                            ☆
+                        </button>
+
+                        <button
+                            type="button"
+                            class="star-btn"
+                            data-type="lunch"
+                            data-rating="5">
+                            ☆
+                        </button>
+
+                    </div>
+
+                    <span
+                        class="rating-text"
+                        id="lunchRatingText">
+                        별점을 선택해주세요
+                    </span>
+
+                </div>
+
 
                 <textarea
                     id="lunchReviewContent"
@@ -139,11 +204,9 @@
         <h2>🌙 석식</h2>
 
         <ul id="dinnerMenu">
-
             <li>
                 불러오는 중...
             </li>
-
         </ul>
 
 
@@ -158,6 +221,65 @@
         <div id="dinnerReviewArea">
 
             <form id="dinnerReviewForm">
+
+                <!-- ⭐ 석식 별점 -->
+
+                <div class="rating-input">
+
+                    <span>급식 별점</span>
+
+                    <div class="star-buttons">
+
+                        <button
+                            type="button"
+                            class="star-btn"
+                            data-type="dinner"
+                            data-rating="1">
+                            ☆
+                        </button>
+
+                        <button
+                            type="button"
+                            class="star-btn"
+                            data-type="dinner"
+                            data-rating="2">
+                            ☆
+                        </button>
+
+                        <button
+                            type="button"
+                            class="star-btn"
+                            data-type="dinner"
+                            data-rating="3">
+                            ☆
+                        </button>
+
+                        <button
+                            type="button"
+                            class="star-btn"
+                            data-type="dinner"
+                            data-rating="4">
+                            ☆
+                        </button>
+
+                        <button
+                            type="button"
+                            class="star-btn"
+                            data-type="dinner"
+                            data-rating="5">
+                            ☆
+                        </button>
+
+                    </div>
+
+                    <span
+                        class="rating-text"
+                        id="dinnerRatingText">
+                        별점을 선택해주세요
+                    </span>
+
+                </div>
+
 
                 <textarea
                     id="dinnerReviewContent"
@@ -327,5 +449,4 @@ logoutButton.addEventListener(
 
 
 </body>
-
 </html>

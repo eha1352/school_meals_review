@@ -1,94 +1,378 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>급식 리뷰</title>
-
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
 <header>
-
-    <h1>🍚 오늘 뭐 먹지?</h1>
+    <h1>🍚 급식 리뷰</h1>
 
     <nav>
-
         <a href="index.html">홈</a>
-
         <a href="meal.html">급식 리뷰</a>
-
         <a href="mypage.html">내 정보</a>
 
         <a href="login.html" id="loginLink">
             로그인
         </a>
 
-        <a href="admin.html"
-           id="adminLink"
-           style="display:none;">
+        <a href="admin.html" id="adminLink" style="display: none;">
             관리자
         </a>
 
-        <button id="logoutButton"
-                style="display:none;">
+        <button id="logoutButton" style="display: none;">
             로그아웃
         </button>
-
     </nav>
-
 </header>
 
 
 <main class="container">
 
-    <!-- 오늘 급식 -->
-
+    <!-- 오늘의 급식 -->
     <section>
 
         <h2>오늘의 급식</h2>
 
-        <p id="today"></p>
-
-        <div id="todayMeal">
-
-            <p>급식 정보를 불러오는 중...</p>
-
-        </div>
-
-    </section>
-
-
-    <hr>
-
-
-    <!-- 앞으로의 급식 -->
-
-    <section>
-
-        <h2>📅 앞으로의 급식</h2>
-
-        <p>
-            앞으로 약 1개월의 급식을 확인할 수 있습니다.
+        <p id="todayDate">
+            날짜를 불러오는 중...
         </p>
 
-        <div id="mealSchedule">
+        <h3>🍚 중식</h3>
 
-            <p>급식 일정을 불러오는 중...</p>
+        <ul id="todayLunch">
+            <li>불러오는 중...</li>
+        </ul>
 
-        </div>
+
+        <h3>🌙 석식</h3>
+
+        <ul id="todayDinner">
+            <li>불러오는 중...</li>
+        </ul>
+
+
+        <br>
+
+        <a id="todayReviewLink" href="#">
+            오늘 리뷰 보기
+        </a>
 
     </section>
 
 </main>
 
 
-<script type="module"
-        src="js/index.js">
+<script type="module">
+
+import { auth, db } from "./js/firebase.js";
+
+import {
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+// ========================================
+// 날짜 함수
+// ========================================
+
+function getKoreaDate() {
+
+    const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Seoul",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+    }).formatToParts(new Date());
+
+    const year = parts.find(
+        p => p.type === "year"
+    ).value;
+
+    const month = parts.find(
+        p => p.type === "month"
+    ).value;
+
+    const day = parts.find(
+        p => p.type === "day"
+    ).value;
+
+    return `${year}-${month}-${day}`;
+}
+
+
+function formatDate(dateString) {
+
+    const date = new Date(
+        `${dateString}T00:00:00Z`
+    );
+
+    const weekdays = [
+        "일",
+        "월",
+        "화",
+        "수",
+        "목",
+        "금",
+        "토"
+    ];
+
+    return `${date.getUTCFullYear()}.${String(date.getUTCMonth() + 1).padStart(2, "0")}.${String(date.getUTCDate()).padStart(2, "0")} (${weekdays[date.getUTCDay()]})`;
+}
+
+
+// ========================================
+// 오늘 급식 불러오기
+// ========================================
+
+async function loadTodayMeal() {
+
+    const today = getKoreaDate();
+
+    const todayDate =
+        document.getElementById("todayDate");
+
+    const todayLunch =
+        document.getElementById("todayLunch");
+
+    const todayDinner =
+        document.getElementById("todayDinner");
+
+    const todayReviewLink =
+        document.getElementById("todayReviewLink");
+
+
+    // 날짜 표시
+    todayDate.textContent =
+        formatDate(today);
+
+
+    // 오늘 리뷰 페이지 연결
+    todayReviewLink.href =
+        `meal.html?date=${today}`;
+
+
+    try {
+
+        const snapshot = await getDoc(
+            doc(db, "meals", today)
+        );
+
+
+        // 오늘 급식이 없는 경우
+        if (!snapshot.exists()) {
+
+            todayLunch.innerHTML =
+                "<li>등록된 중식이 없습니다.</li>";
+
+            todayDinner.innerHTML =
+                "<li>등록된 석식이 없습니다.</li>";
+
+            return;
+        }
+
+
+        const meal = snapshot.data();
+
+
+        // ========================================
+        // 중식
+        // ========================================
+
+        todayLunch.innerHTML = "";
+
+        if (
+            !meal.lunch ||
+            meal.lunch.length === 0
+        ) {
+
+            todayLunch.innerHTML =
+                "<li>등록된 중식이 없습니다.</li>";
+
+        } else {
+
+            meal.lunch.forEach(menu => {
+
+                const li =
+                    document.createElement("li");
+
+                li.textContent = menu;
+
+                todayLunch.appendChild(li);
+
+            });
+        }
+
+
+        // ========================================
+        // 석식
+        // ========================================
+
+        todayDinner.innerHTML = "";
+
+        if (
+            !meal.dinner ||
+            meal.dinner.length === 0
+        ) {
+
+            todayDinner.innerHTML =
+                "<li>등록된 석식이 없습니다.</li>";
+
+        } else {
+
+            meal.dinner.forEach(menu => {
+
+                const li =
+                    document.createElement("li");
+
+                li.textContent = menu;
+
+                todayDinner.appendChild(li);
+
+            });
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "오늘 급식 불러오기 오류:",
+            error
+        );
+
+
+        todayLunch.innerHTML =
+            "<li>급식을 불러오지 못했습니다.</li>";
+
+        todayDinner.innerHTML =
+            "<li>급식을 불러오지 못했습니다.</li>";
+    }
+}
+
+
+// ========================================
+// 로그인 / 관리자
+// ========================================
+
+const loginLink =
+    document.getElementById("loginLink");
+
+const logoutButton =
+    document.getElementById("logoutButton");
+
+const adminLink =
+    document.getElementById("adminLink");
+
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        // 로그인하지 않은 경우
+        if (!user) {
+
+            loginLink.style.display =
+                "inline";
+
+            logoutButton.style.display =
+                "none";
+
+            adminLink.style.display =
+                "none";
+
+            return;
+        }
+
+
+        // 로그인한 경우
+        loginLink.style.display =
+            "none";
+
+        logoutButton.style.display =
+            "inline";
+
+
+        try {
+
+            const snapshot =
+                await getDoc(
+                    doc(db, "users", user.uid)
+                );
+
+
+            // 관리자라면 관리자 메뉴 표시
+            if (
+                snapshot.exists() &&
+                snapshot.data().role === "admin"
+            ) {
+
+                adminLink.style.display =
+                    "inline";
+
+            } else {
+
+                adminLink.style.display =
+                    "none";
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "사용자 정보 확인 오류:",
+                error
+            );
+
+            adminLink.style.display =
+                "none";
+        }
+    }
+);
+
+
+// ========================================
+// 로그아웃
+// ========================================
+
+logoutButton.addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            await signOut(auth);
+
+            location.reload();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "로그아웃에 실패했습니다."
+            );
+        }
+    }
+);
+
+
+// ========================================
+// 실행
+// ========================================
+
+loadTodayMeal();
+
 </script>
 
 </body>

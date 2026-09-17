@@ -236,6 +236,97 @@ async function loadMeal() {
 }
 
 
-// 실행
 
+// ==========================
+// 날짜 이동
+// ==========================
+
+const prevDayButton =
+    document.getElementById("prevDayButton");
+
+const nextDayButton =
+    document.getElementById("nextDayButton");
+
+const datePicker =
+    document.getElementById("datePicker");
+
+
+// 날짜를 Date 객체로 변환
+function getDateObject(dateString) {
+    return new Date(
+        `${dateString}T00:00:00+09:00`
+    );
+}
+
+
+// Date 객체를 YYYY-MM-DD로 변환
+function dateToString(date) {
+    const year = date.getFullYear();
+
+    const month = String(
+        date.getMonth() + 1
+    ).padStart(2, "0");
+
+    const day = String(
+        date.getDate()
+    ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
+
+
+// 날짜 이동
+function moveDate(days) {
+
+    const date =
+        getDateObject(selectedDate);
+
+    date.setDate(
+        date.getDate() + days
+    );
+
+    const newDate =
+        dateToString(date);
+
+    window.location.href =
+        `meal.html?date=${newDate}`;
+}
+
+
+// 이전 날짜
+prevDayButton.addEventListener(
+    "click",
+    () => {
+        moveDate(-1);
+    }
+);
+
+
+// 다음 날짜
+nextDayButton.addEventListener(
+    "click",
+    () => {
+        moveDate(1);
+    }
+);
+
+
+// 날짜 선택
+datePicker.value = selectedDate;
+
+datePicker.addEventListener(
+    "change",
+    () => {
+
+        if (!datePicker.value) {
+            return;
+        }
+
+        window.location.href =
+            `meal.html?date=${datePicker.value}`;
+    }
+);
+
+
+// 실행
 loadMeal();

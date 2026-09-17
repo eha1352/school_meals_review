@@ -20,9 +20,6 @@ const todayElement =
 const todayMeal =
     document.getElementById("todayMeal");
 
-const mealSchedule =
-    document.getElementById("mealSchedule");
-
 const loginLink =
     document.getElementById("loginLink");
 
@@ -156,124 +153,6 @@ async function loadTodayMeal() {
 }
 
 
-// ==========================
-// 약 한 달 급식
-// ==========================
-
-async function loadMealSchedule() {
-
-    const today =
-        getKoreaDate();
-
-
-    mealSchedule.innerHTML =
-        "";
-
-
-    // 오늘 포함 31일
-
-    for (let i = 0; i < 31; i++) {
-
-        const date =
-            addDays(today, i);
-
-
-        try {
-
-            const snapshot =
-                await getDoc(
-                    doc(db, "meals", date)
-                );
-
-
-            const box =
-                document.createElement("div");
-
-            box.className =
-                "meal-schedule-item";
-
-
-            if (!snapshot.exists()) {
-
-                box.innerHTML =
-                    `
-                    <div>
-                        <strong>
-                            ${formatDate(date)}
-                        </strong>
-
-                        <p>
-                            등록된 급식이 없습니다.
-                        </p>
-                    </div>
-                    `;
-
-            } else {
-
-                const meal =
-                    snapshot.data();
-
-
-                box.innerHTML =
-                    `
-                    <div>
-
-                        <strong>
-                            ${formatDate(date)}
-                        </strong>
-
-                        <p>
-                            🍚 중식:
-                            ${getFirstMenu(meal.lunch)}
-                        </p>
-
-                        <p>
-                            🌙 석식:
-                            ${getFirstMenu(meal.dinner)}
-                        </p>
-
-                    </div>
-
-
-                    <button
-                        class="date-button"
-                        data-date="${date}">
-                        자세히 보기
-                    </button>
-                    `;
-
-
-                box.querySelector(
-                    ".date-button"
-                ).addEventListener(
-                    "click",
-                    () => {
-
-                        location.href =
-                            `meal.html?date=${date}`;
-
-                    }
-                );
-
-            }
-
-
-            mealSchedule.appendChild(box);
-
-
-        } catch (error) {
-
-            console.error(
-                `${date} 급식 오류:`,
-                error
-            );
-
-        }
-
-    }
-
-}
-
 
 // ==========================
 // 메뉴 목록
@@ -299,29 +178,6 @@ function createMenuList(menu) {
 }
 
 
-// ==========================
-// 첫 번째 메뉴
-// ==========================
-
-function getFirstMenu(menu) {
-
-    if (!menu || menu.length === 0) {
-
-        return "없음";
-    }
-
-
-    if (menu.length === 1) {
-
-        return escapeHtml(menu[0]);
-    }
-
-
-    return `
-        ${escapeHtml(menu[0])}
-        외 ${menu.length - 1}개
-    `;
-}
 
 
 // ==========================
@@ -471,4 +327,3 @@ function escapeHtml(text) {
 // 실행
 
 loadTodayMeal();
-loadMealSchedule();
